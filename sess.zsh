@@ -624,7 +624,7 @@ function sess:startup_check() {
 		echo ""
 		echo "Then you might want to add it to the exports file. e.g. by running the commands below:"
 		echo "touch \$ZEXT_INSTALL_DIR/installed/scripts/_exports.zsh;"
-		echo "echo \"\ZSH_SESSION_PATH=\$HOME/bin/zsh_sessions\" \$ZEXT_INSTALL_DIR/installed/scripts/_exports.zsh;"
+		echo "echo \"ZSH_SESSION_PATH=\$HOME/bin/zsh_sessions\" > \$ZEXT_INSTALL_DIR/installed/scripts/_exports.zsh;"
 		return 1
 	fi
 
