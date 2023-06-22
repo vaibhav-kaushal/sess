@@ -617,6 +617,14 @@ function sess:startup_check() {
 		echo "ZSH_SESSION_PATH is not set."
 		echo "Sessions needs a directory to store sessions data."
 		echo "Create the directory and set ZSH_SESSION_PATH to that value."
+		echo ""
+		echo "For example, you might run these commands to create the directory:"
+		echo ""
+		echo "mkdir -p \$HOME/bin/zsh_sessions"
+		echo ""
+		echo "Then you might want to add it to the exports file. e.g. by running the commands below:"
+		echo "touch \$ZEXT_INSTALL_DIR/installed/scripts/_exports.zsh;"
+		echo "echo \"\ZSH_SESSION_PATH=\$HOME/bin/zsh_sessions\" \$ZEXT_INSTALL_DIR/installed/scripts/_exports.zsh;"
 		return 1
 	fi
 
