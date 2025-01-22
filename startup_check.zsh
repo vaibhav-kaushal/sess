@@ -7,10 +7,31 @@ fi
 
 # Check if the variable is set
 if [[ ! -v ZSH_SESSION_PATH ]]; then
-  echo "ZSH_SESSION_PATH is not set."
-  echo "Sessions needs a directory to store sessions data."
-  echo "Create the directory and set ZSH_SESSION_PATH to that value."
-  return 1
+  # Let's check if the ZSHY extensions data directory is set or not
+  if [[ -v ZSHY_EXT_DATA ]]; then 
+    # It is defined. Check if the path exists 
+    if [ -d $ZSHY_EXT_DATA ]; then
+      ZSH_SESSION_PATH="$ZSHY_EXT_DATA/sess"
+    else
+      # We will try to create that directory 
+      mkdir -p "$ZSHY_EXT_DATA/sess"
+      if [ $? -ne 0 ]; then 
+        echo "E#29W1QV: ZSH_SESSION_PATH could not be determined."
+        echo "The directory $ZSHY_EXT_DATA/sess is supposed to exist but it does not"
+        echo "Cannot continue. Please create the above directory and then "
+        return 1
+      fi
+
+      # If we are here then the directory got created.
+      ZSH_SESSION_PATH="$ZSHY_EXT_DATA/sess"
+    fi
+  else
+    # ZSHY extensions data folder is also not set.
+    echo "E#29W1X5: ZSH_SESSION_PATH is not set."
+    echo "Sessions needs a directory to store sessions data."
+    echo "Create the directory and set ZSH_SESSION_PATH to that value."
+    return 1
+  fi
 fi
 
 # Check that the directory exists
