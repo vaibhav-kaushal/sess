@@ -55,7 +55,7 @@ if [ $__opt_ls -eq 1 ]; then
 
 		case $__opt_ls_type in
 		active | a)
-			cd $ZSH_SESSION_PATH
+			cd $ZSHY_SESS_DATA_PATH
 
 			echo "Active Sessions:"
 			echo "~~~~~~~~~~~~~~~~"
@@ -99,7 +99,7 @@ if [ $__opt_ls -eq 1 ]; then
 			return 0
 			;;
 		ended | e)
-			cd $ZSH_SESSION_PATH
+			cd $ZSHY_SESS_DATA_PATH
 
 			echo "Ended Sessions:"
 			echo "~~~~~~~~~~~~~~~"
@@ -143,7 +143,7 @@ if [ $__opt_ls -eq 1 ]; then
 			return 0
 			;;
 		live | l)
-			cd $ZSH_SESSION_PATH
+			cd $ZSHY_SESS_DATA_PATH
 
 			echo "Live sessions:"
 			echo "~~~~~~~~~~~~~~"
@@ -182,7 +182,7 @@ if [ $__opt_ls -eq 1 ]; then
 				IFS=$"\n"
 				read -r i
 			do
-				cd "${ZSH_SESSION_PATH}/${i}"
+				cd "${ZSHY_SESS_DATA_PATH}/${i}"
 
 				if [ -f ./session_in_use ]; then
 					existing_session_lock_value=$(cat ./session_in_use)
@@ -203,7 +203,7 @@ if [ $__opt_ls -eq 1 ]; then
 			return 0
 			;;
 		all | A)
-			cd $ZSH_SESSION_PATH
+			cd $ZSHY_SESS_DATA_PATH
 
 			echo "All Sessions (prefixed with state):"
 			echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
@@ -406,37 +406,37 @@ return 0
 
 # function sess:create() {
 # 	# Check that the session already exists or not
-# 	if [ -d "${ZSH_SESSION_PATH}/active.${1}" ]; then
+# 	if [ -d "${ZSHY_SESS_DATA_PATH}/active.${1}" ]; then
 # 		echo "An active session with that name already exists"
 # 		echo "Please select a new name for the session"
 # 		return 31
 # 	fi
 
-# 	if [ -d "${ZSH_SESSION_PATH}/ended.${1}" ]; then
+# 	if [ -d "${ZSHY_SESS_DATA_PATH}/ended.${1}" ]; then
 # 		echo "An ended session with that name already exists."
 # 		echo "Please select a new name for the session"
 # 		return 32
 # 	fi
 
 # 	# All fine. create the session directory
-# 	mkdir -p "${ZSH_SESSION_PATH}/active.${1}"
+# 	mkdir -p "${ZSHY_SESS_DATA_PATH}/active.${1}"
 # 	# And the history file
-# 	touch "${ZSH_SESSION_PATH}/active.${1}/zsh_history.txt"
+# 	touch "${ZSHY_SESS_DATA_PATH}/active.${1}/zsh_history.txt"
 
 # 	# Create lock file
-# 	touch "${ZSH_SESSION_PATH}/active.${1}/session_in_use"
+# 	touch "${ZSHY_SESS_DATA_PATH}/active.${1}/session_in_use"
 
 # 	# Put 0 in it
-# 	echo "0" >"${ZSH_SESSION_PATH}/active.${1}/session_in_use"
+# 	echo "0" >"${ZSHY_SESS_DATA_PATH}/active.${1}/session_in_use"
 
 # 	# Create the session initalization file
-# 	touch "${ZSH_SESSION_PATH}/active.${1}/init.sh"
-# 	echo "#!/usr/bin/env zsh" >>"${ZSH_SESSION_PATH}/active.${1}/init.sh"
+# 	touch "${ZSHY_SESS_DATA_PATH}/active.${1}/init.sh"
+# 	echo "#!/usr/bin/env zsh" >>"${ZSHY_SESS_DATA_PATH}/active.${1}/init.sh"
 
 # 	# Insert the command to change the HISTFILE to the newly created history file.
 # 	#   We do this because just setting the HISTFILE variable and launching the ZSH shell might not work!
 # 	#   This is a known behavior with oh-my-zsh.
-# 	echo "fc -p ${ZSH_SESSION_PATH}/active.${1}/zsh_history.txt" >>"${ZSH_SESSION_PATH}/active.${1}/init.sh"
+# 	echo "fc -p ${ZSHY_SESS_DATA_PATH}/active.${1}/zsh_history.txt" >>"${ZSHY_SESS_DATA_PATH}/active.${1}/init.sh"
 
 # 	# Put out the message
 # 	pr blue "Init file created. If you want to customize the startup of this session, run:"
@@ -457,13 +457,13 @@ return 0
 # 		return 40
 # 	fi
 
-# 	if [ ! -d "${ZSH_SESSION_PATH}/active.${ZSH_SESSION_NAME}" ]; then
+# 	if [ ! -d "${ZSHY_SESS_DATA_PATH}/active.${ZSH_SESSION_NAME}" ]; then
 # 		pr red "Active session's storage directory is not present!!!!!"
 # 		pr red "!!! ABORTING !!!"
 # 		return 39
 # 	fi
 
-# 	$EDITOR "${ZSH_SESSION_PATH}/active.${ZSH_SESSION_NAME}/init.sh"
+# 	$EDITOR "${ZSHY_SESS_DATA_PATH}/active.${ZSH_SESSION_NAME}/init.sh"
 # }
 
 # function sess:join() {
@@ -474,18 +474,18 @@ return 0
 # 		return 40
 # 	fi
 
-# 	if [ -d "${ZSH_SESSION_PATH}/ended.${1}" ]; then
+# 	if [ -d "${ZSHY_SESS_DATA_PATH}/ended.${1}" ]; then
 # 		echo "An ended session with that name already exists."
 # 		echo "Cannot join an ended session"
 # 		return 33
 # 	fi
 
 # 	# Check that the session exists and is active.
-# 	if [ ! -d "${ZSH_SESSION_PATH}/active.${1}" ]; then
+# 	if [ ! -d "${ZSHY_SESS_DATA_PATH}/active.${1}" ]; then
 # 		echo "No session with that name is active."
 # 		echo "Please create a session with that name first."
 # 		return 34
-# 	elif [ ! -f "${ZSH_SESSION_PATH}/active.${1}/zsh_history.txt" ]; then
+# 	elif [ ! -f "${ZSHY_SESS_DATA_PATH}/active.${1}/zsh_history.txt" ]; then
 # 		echo "Session exists but history file was not found in path."
 # 		echo "It appears that the session was corrupted."
 # 		echo "Please create a new session with a different name."
@@ -499,41 +499,41 @@ return 0
 
 # 	# Value in the lock file
 # 	local existing_session_lock_value
-# 	existing_session_lock_value=$(cat "${ZSH_SESSION_PATH}/active.${1}/session_in_use")
+# 	existing_session_lock_value=$(cat "${ZSHY_SESS_DATA_PATH}/active.${1}/session_in_use")
 
 # 	final_value=$(( session_id + existing_session_lock_value ))
 
-# 	echo "$final_value" > "${ZSH_SESSION_PATH}/active.${1}/session_in_use"
+# 	echo "$final_value" > "${ZSHY_SESS_DATA_PATH}/active.${1}/session_in_use"
 
 # 	echo "Joining session $1"
 
 # 	# Prevent error message
-# 	touch "${ZSH_SESSION_PATH}/active.${1}/init.sh"
+# 	touch "${ZSHY_SESS_DATA_PATH}/active.${1}/init.sh"
 
 # 	# All fine. Join session.
-# 	# ZSH_SESSION_NAME=$1 HISTFILE="${ZSH_SESSION_PATH}/active.${1}/zsh_history.txt" ZSH_SESSION_INIT_FILE="${ZSH_SESSION_PATH}/active.${1}/init.sh" zsh --hist-ignore-space
-# 	ZSH_SESSION_NAME=$1 ZSH_SESSION_INIT_FILE="${ZSH_SESSION_PATH}/active.${1}/init.sh" zsh --hist-ignore-space
+# 	# ZSH_SESSION_NAME=$1 HISTFILE="${ZSHY_SESS_DATA_PATH}/active.${1}/zsh_history.txt" ZSH_SESSION_INIT_FILE="${ZSHY_SESS_DATA_PATH}/active.${1}/init.sh" zsh --hist-ignore-space
+# 	ZSH_SESSION_NAME=$1 ZSH_SESSION_INIT_FILE="${ZSHY_SESS_DATA_PATH}/active.${1}/init.sh" zsh --hist-ignore-space
 
 # 	echo "Exited from session $1"
 
 # 	# Session has ended. Reduce the value in the lock file
-# 	existing_session_lock_value=$(cat "${ZSH_SESSION_PATH}/active.${1}/session_in_use")
+# 	existing_session_lock_value=$(cat "${ZSHY_SESS_DATA_PATH}/active.${1}/session_in_use")
 # 	final_value=$(( existing_session_lock_value - session_id ))
-# 	echo "$final_value" > "${ZSH_SESSION_PATH}/active.${1}/session_in_use"
+# 	echo "$final_value" > "${ZSHY_SESS_DATA_PATH}/active.${1}/session_in_use"
 # }
 
 # function sess:end() {
-# 	if [ -d "${ZSH_SESSION_PATH}/ended.${1}" ]; then
+# 	if [ -d "${ZSHY_SESS_DATA_PATH}/ended.${1}" ]; then
 # 		echo "An ended session with that name already exists."
 # 		echo "Cannot end an already ended session"
 # 		return 36
 # 	fi
 
-# 	if [ ! -d "${ZSH_SESSION_PATH}/active.${1}" ]; then
+# 	if [ ! -d "${ZSHY_SESS_DATA_PATH}/active.${1}" ]; then
 # 		echo "No session with that name is active."
 # 		echo "Cannot end a non-existent session"
 # 		return 37
-# 	elif [ ! -f "${ZSH_SESSION_PATH}/active.${1}/zsh_history.txt" ]; then
+# 	elif [ ! -f "${ZSHY_SESS_DATA_PATH}/active.${1}/zsh_history.txt" ]; then
 # 		echo "Session exists but history file was not found in path."
 # 		echo "It appears that the session was corrupted."
 # 		echo "We will NOT END the session to allow debugging and correction."
@@ -542,7 +542,7 @@ return 0
 
 # 	# Check the lock file value and if it is 0, end the session
 # 	local existing_session_lock_value
-# 	existing_session_lock_value=$(cat "${ZSH_SESSION_PATH}/active.${1}/session_in_use")
+# 	existing_session_lock_value=$(cat "${ZSHY_SESS_DATA_PATH}/active.${1}/session_in_use")
 
 # 	if [ $existing_session_lock_value -gt 0 ]; then
 # 		echo "Cannot end a session currently in use."
@@ -552,19 +552,19 @@ return 0
 # 		return 39
 # 	else
 # 		# We should end the session
-# 		mv "${ZSH_SESSION_PATH}/active.${1}" "${ZSH_SESSION_PATH}/ended.${1}"
+# 		mv "${ZSHY_SESS_DATA_PATH}/active.${1}" "${ZSHY_SESS_DATA_PATH}/ended.${1}"
 # 		echo "Session $1 ended!"
 # 	fi
 # }
 
 # function sess:delete() {
-# 	if [ -d "${ZSH_SESSION_PATH}/active.${1}" ]; then
+# 	if [ -d "${ZSHY_SESS_DATA_PATH}/active.${1}" ]; then
 # 		pr red "Cannot delete an active session!"
 # 		echo "Please end the session and try again."
 # 		return 46
 # 	fi
 
-# 	if [ ! -d "${ZSH_SESSION_PATH}/ended.${1}" ]; then
+# 	if [ ! -d "${ZSHY_SESS_DATA_PATH}/ended.${1}" ]; then
 # 		pr red "No such session. Cannot delete a non-existent session!"
 # 		return 47
 # 	fi
@@ -576,7 +576,7 @@ return 0
 # 	if [[ $choice = "y" || $choice = "Y" ]]; then
 # 		echo ""
 # 		pr red "Deleting session"
-# 		rm -r "${ZSH_SESSION_PATH}/ended.${1}"
+# 		rm -r "${ZSHY_SESS_DATA_PATH}/ended.${1}"
 # 		pr green "...done"
 # 	else
 # 		pr blue "You opted for not deleting the session."
@@ -622,44 +622,44 @@ return 0
 # 	fi
 
 # 	# Check if the variable is set
-# 	if [[ ! -v ZSH_SESSION_PATH ]]; then
-# 		echo "ZSH_SESSION_PATH is not set."
+# 	if [[ ! -v ZSHY_SESS_DATA_PATH ]]; then
+# 		echo "ZSHY_SESS_DATA_PATH is not set."
 # 		echo "Sessions needs a directory to store sessions data."
-# 		echo "Create the directory and set ZSH_SESSION_PATH to that value."
+# 		echo "Create the directory and set ZSHY_SESS_DATA_PATH to that value."
 # 		return 1
 # 	fi
 
 # 	# Check that the directory exists
-# 	if [ -e "$ZSH_SESSION_PATH" ]; then
+# 	if [ -e "$ZSHY_SESS_DATA_PATH" ]; then
 # 		# Path exists
 # 		# Check if it is a file.
-# 		if [ -f "$ZSH_SESSION_PATH" ]; then
+# 		if [ -f "$ZSHY_SESS_DATA_PATH" ]; then
 # 			# It is a file.
-# 			echo "ZSH_SESSION_PATH points to a file."
+# 			echo "ZSHY_SESS_DATA_PATH points to a file."
 # 			echo "Please make sure that it points to a directory."
 # 			return 2
 # 		fi
 
 # 		# Check that it is not a symbolic link
-# 		if [ -d "$ZSH_SESSION_PATH" ]; then
-# 			if [ -L "$ZSH_SESSION_PATH" ]; then
-# 				echo "ZSH_SESSION_PATH is a symlink to a directory."
+# 		if [ -d "$ZSHY_SESS_DATA_PATH" ]; then
+# 			if [ -L "$ZSHY_SESS_DATA_PATH" ]; then
+# 				echo "ZSHY_SESS_DATA_PATH is a symlink to a directory."
 # 				echo "Please make sure that it points to a directory, not to a symlink."
 # 				return 2
 # 			fi
 # 		else
-# 			echo "ZSH_SESSION_PATH points to an address which is not a directory."
+# 			echo "ZSHY_SESS_DATA_PATH points to an address which is not a directory."
 # 			echo "Please make sure that it points to a directory."
 # 			return 4
 # 		fi
 # 	else
-# 		echo "ZSH_SESSION_PATH points to a non-existent location."
+# 		echo "ZSHY_SESS_DATA_PATH points to a non-existent location."
 # 		echo "Sessions needs a directory to store sessions data."
-# 		echo "Create the directory and set ZSH_SESSION_PATH to that value."
+# 		echo "Create the directory and set ZSHY_SESS_DATA_PATH to that value."
 
 # 		echo "Run this to create the directory:"
 # 		echo ""
-# 		echo "mkdir -p $ZSH_SESSION_PATH"
+# 		echo "mkdir -p $ZSHY_SESS_DATA_PATH"
 
 # 		return 5
 # 	fi

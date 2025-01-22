@@ -6,10 +6,10 @@ if [[ ! -v ZSH_SESSION_NAME ]]; then
   return 40
 fi
 
-if [ ! -d "${ZSH_SESSION_PATH}/active.${ZSH_SESSION_NAME}" ]; then
+if [ ! -d "${ZSHY_SESS_DATA_PATH}/active.${ZSH_SESSION_NAME}" ]; then
   pr red "Active session's storage directory is not present!!!!!"
   pr red "!!! ABORTING !!!"
   return 39
 fi
 
-$EDITOR "${ZSH_SESSION_PATH}/active.${ZSH_SESSION_NAME}/init.sh"
+$EDITOR "${ZSHY_SESS_DATA_PATH}/active.${ZSH_SESSION_NAME}/init.sh"
