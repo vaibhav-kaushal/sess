@@ -58,7 +58,8 @@ if [ -e "$ZSHY_SESS_DATA_PATH" ]; then
     return 4
   fi
 else
-  echo "ZSHY_SESS_DATA_PATH points to a non-existent location."
+  echo "ZSHY_SESS_DATA_PATH points to a non-existent location:"
+  echo "$ZSHY_SESS_DATA_PATH"
   echo "Sessions needs a directory to store sessions data."
   echo "Create the directory and set ZSHY_SESS_DATA_PATH to that value."
 
