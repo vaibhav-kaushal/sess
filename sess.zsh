@@ -346,13 +346,13 @@ __addval=$((__opt_cs + __opt_js + __opt_es + __opt_ds))
 # echo "addval= $addval"
 
 if [ $__addval -gt 1 ]; then
-	pr red "Malformed operations. Check usage:"
+	clpr red "Malformed operations. Check usage:"
 	echo ""
 	#sess:usage
 	source ${0:A:h}/help.zsh
 	return 20
 elif [ $__addval -eq 0 ]; then
-	pr red "No operation supplied!"
+	clpr red "No operation supplied!"
 	echo ""
 	#sess:usage
 	source ${0:A:h}/help.zsh
@@ -361,7 +361,7 @@ fi
 
 # Check if session name was empty (in case someone supplied the operation but not the session name)
 if [ -z "$__sess_name" ]; then
-	pr red "Session name was not supplied. Check usage:"
+	clpr red "Session name was not supplied. Check usage:"
 	#sess:usage
 	source ${0:A:h}/help.zsh
 	return 21
@@ -384,7 +384,7 @@ if [ $__opt_js -eq 1 ]; then
 		sess_join_limit=10
 		n=1
 		while [[ $n -le $sess_join_limit ]]; do
-			pr blue "--loop was supplied when joining the session. It will be rejoined $(($sess_join_limit - $n)) times more."
+			clpr blue "--loop was supplied when joining the session. It will be rejoined $(($sess_join_limit - $n)) times more."
 			source ${0:A:h}/join.zsh $__sess_name
 			let n=$n+1
 		done
@@ -439,8 +439,8 @@ return 0
 # 	echo "fc -p ${ZSHY_SESS_DATA_PATH}/active.${1}/zsh_history.txt" >>"${ZSHY_SESS_DATA_PATH}/active.${1}/init.sh"
 
 # 	# Put out the message
-# 	pr blue "Init file created. If you want to customize the startup of this session, run:"
-# 	pr blue white "sess --editinit"
+# 	clpr blue "Init file created. If you want to customize the startup of this session, run:"
+# 	clpr blue white "sess --editinit"
 # 	echo ""
 # 	echo "Ensure that you have this line at the bottom of your .zshrc file:"
 # 	echo "[[ -v ZSH_SESSION_INIT_FILE ]] && source \"\$ZSH_SESSION_INIT_FILE\""
@@ -452,14 +452,14 @@ return 0
 # This function allows you to edit a session's init.sh file
 # function sess:editinit() {
 # 	if [[ ! -v ZSH_SESSION_NAME ]]; then
-# 		pr red "Not inside an active session."
+# 		clpr red "Not inside an active session."
 # 		echo "Please join a session first."
 # 		return 40
 # 	fi
 
 # 	if [ ! -d "${ZSHY_SESS_DATA_PATH}/active.${ZSH_SESSION_NAME}" ]; then
-# 		pr red "Active session's storage directory is not present!!!!!"
-# 		pr red "!!! ABORTING !!!"
+# 		clpr red "Active session's storage directory is not present!!!!!"
+# 		clpr red "!!! ABORTING !!!"
 # 		return 39
 # 	fi
 
@@ -559,28 +559,28 @@ return 0
 
 # function sess:delete() {
 # 	if [ -d "${ZSHY_SESS_DATA_PATH}/active.${1}" ]; then
-# 		pr red "Cannot delete an active session!"
+# 		clpr red "Cannot delete an active session!"
 # 		echo "Please end the session and try again."
 # 		return 46
 # 	fi
 
 # 	if [ ! -d "${ZSHY_SESS_DATA_PATH}/ended.${1}" ]; then
-# 		pr red "No such session. Cannot delete a non-existent session!"
+# 		clpr red "No such session. Cannot delete a non-existent session!"
 # 		return 47
 # 	fi
 
-# 	pr blue "Are you sure?"
-# 	pr blue "-------------"
+# 	clpr blue "Are you sure?"
+# 	clpr blue "-------------"
 
 # 	read -k1 "choice?Are you sure you want to delete session '${1}'? [y/n]"
 # 	if [[ $choice = "y" || $choice = "Y" ]]; then
 # 		echo ""
-# 		pr red "Deleting session"
+# 		clpr red "Deleting session"
 # 		rm -r "${ZSHY_SESS_DATA_PATH}/ended.${1}"
-# 		pr green "...done"
+# 		clpr green "...done"
 # 	else
-# 		pr blue "You opted for not deleting the session."
-# 		pr blue "!!! Aborting !!!"
+# 		clpr blue "You opted for not deleting the session."
+# 		clpr blue "!!! Aborting !!!"
 # 		return 48
 # 	fi
 
