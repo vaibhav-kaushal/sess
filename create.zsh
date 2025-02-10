@@ -34,8 +34,8 @@ echo "#!/usr/bin/env zsh" >>"${ZSHY_SESS_DATA_PATH}/active.${1}/init.sh"
 echo "fc -p ${ZSHY_SESS_DATA_PATH}/active.${1}/zsh_history.txt" >>"${ZSHY_SESS_DATA_PATH}/active.${1}/init.sh"
 
 # Put out the message
-pr blue "Init file created. If you want to customize the startup of this session, run:"
-pr blue white "sess --editinit"
+clpr blue "Init file created. If you want to customize the startup of this session, run:"
+clpr blue white "sess --editinit"
 echo ""
 echo "Ensure that you have this line at the bottom of your .zshrc file:"
 echo "[[ -v ZSH_SESSION_INIT_FILE ]] && source \"\$ZSH_SESSION_INIT_FILE\""
